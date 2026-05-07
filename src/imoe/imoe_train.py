@@ -9,6 +9,7 @@ from fvcore.nn import FlopCountAnalysis, parameter_count
 import time
 
 from src.common.datasets.adni import load_and_preprocess_data_adni
+from src.common.datasets.adni_demo import load_and_preprocess_data_adni_demo
 from src.common.datasets.mimic import load_and_preprocess_data_mimic
 from src.common.datasets.enrico import load_and_preprocess_data_enrico
 from src.common.datasets.mmimdb import load_and_preprocess_data_mmimdb
@@ -70,6 +71,22 @@ def train_and_evaluate_imoe(args, seed, fusion_model, fusion):
             _,
             _,
         ) = load_and_preprocess_data_adni(args)
+    elif args.data == "adni_demo":
+        (
+            data_dict,
+            encoder_dict,
+            labels,
+            train_ids,
+            valid_ids,
+            test_ids,
+            n_labels,
+            input_dims,
+            transforms,
+            masks,
+            observed_idx_arr,
+            _,
+            _,
+        ) = load_and_preprocess_data_adni_demo(args)
     elif args.data == "mimic":
         (
             data_dict,
@@ -226,7 +243,7 @@ def train_and_evaluate_imoe(args, seed, fusion_model, fusion):
     ]
 
     optimizer = torch.optim.Adam(params, lr=args.lr)
-    if args.data in ["adni", "enrico", "mosi", "sarcasm", "humor"]:
+    if args.data in ["adni", "adni_demo", "enrico", "mosi", "sarcasm", "humor"]:
         criterion = torch.nn.CrossEntropyLoss()
     elif args.data == "mimic":
         criterion = torch.nn.CrossEntropyLoss(torch.tensor([0.25, 0.75]).to(device))
@@ -453,7 +470,7 @@ def train_and_evaluate_imoe(args, seed, fusion_model, fusion):
                 val_auc = roc_auc_score(all_labels, all_probs)
             elif args.data == "mmimdb":
                 val_auc = 0
-            elif args.data == "adni":
+            elif args.data in ["adni", "adni_demo"]:
                 val_auc = roc_auc_score(all_labels, all_probs, multi_class="ovr")
 
             print(
@@ -680,7 +697,7 @@ def train_and_evaluate_imoe(args, seed, fusion_model, fusion):
             test_auc = roc_auc_score(all_labels, all_probs)
         elif args.data == "mmimdb":
             test_auc = 0
-        elif args.data == "adni":
+        elif args.data in ["adni", "adni_demo"]:
             test_auc = roc_auc_score(all_labels, all_probs, multi_class="ovr")
 
         now = datetime.now()

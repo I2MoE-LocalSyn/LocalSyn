@@ -130,6 +130,7 @@ def main():
 
     data_to_nlabels = {
         "adni": 3,
+        "adni_demo": 3,
         "mimic": 2,
         "mmimdb": 23,
         "enrico": 20,
