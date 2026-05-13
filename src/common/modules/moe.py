@@ -9,16 +9,94 @@ import torch.nn as nn
 
 # from timm.models.layers import trunc_normal_
 
-from fmoe.transformer import _Expert
-from fmoe.layers import FMoE, _fmoe_general_global_forward, mark_module_parallel_comm
-from fmoe.functions import ensure_comm, Slice, AllGather
-from fmoe.gates import NaiveGate
-import fmoe_cuda as fmoe_native
-from fmoe.functions import count_by_gate
+try:
+    from fmoe.transformer import _Expert
+    from fmoe.layers import FMoE, _fmoe_general_global_forward, mark_module_parallel_comm
+    from fmoe.functions import ensure_comm, Slice, AllGather
+    from fmoe.gates import NaiveGate
+    import fmoe_cuda as fmoe_native
+    from fmoe.functions import count_by_gate
+    import tree
+    from fmoe.gates import NoisyGate
+except ImportError:
+    _FMOE_IMPORT_ERROR = (
+        "fastmoe/fmoe is not installed. Set --fusion_sparse False for dense dry runs "
+        "or install fastmoe in a compatible Linux/CUDA environment for sparse MoE."
+    )
 
-import tree
+    class _Expert(nn.Module):
+        def __init__(self, *args, **kwargs):
+            super().__init__()
+            raise ImportError(_FMOE_IMPORT_ERROR)
 
-from fmoe.gates import NoisyGate
+    class FMoE(nn.Module):
+        pass
+
+    class _MissingFMoENative:
+        def __getattr__(self, name):
+            raise ImportError(_FMOE_IMPORT_ERROR)
+
+    class _MissingTree:
+        @staticmethod
+        def map_structure(*args, **kwargs):
+            raise ImportError(_FMOE_IMPORT_ERROR)
+
+        @staticmethod
+        def flatten(*args, **kwargs):
+            raise ImportError(_FMOE_IMPORT_ERROR)
+
+    class _MissingAutogradFunction:
+        @staticmethod
+        def apply(*args, **kwargs):
+            raise ImportError(_FMOE_IMPORT_ERROR)
+
+    class NaiveGate(nn.Module):
+        def __init__(
+            self, d_model, num_expert, world_size=1, top_k=2, gate_bias=True, **kwargs
+        ):
+            super().__init__()
+            self.gate = nn.Linear(d_model, num_expert * world_size, bias=gate_bias)
+            self.num_expert = num_expert
+            self.world_size = world_size
+            self.top_k = top_k
+            self.tot_expert = num_expert * world_size
+            self.loss = None
+
+        def set_loss(self, loss):
+            self.loss = loss if self.loss is None else self.loss + loss
+
+        def get_loss(self, clear=True):
+            loss = self.loss
+            if clear:
+                self.loss = None
+            return loss
+
+        def forward(self, inp, return_all_scores=False):
+            score = self.gate(inp)
+            topk_val, topk_idx = torch.topk(score, k=self.top_k, dim=-1)
+            if return_all_scores:
+                return topk_idx, topk_val, score
+            return topk_idx, topk_val
+
+    class NoisyGate(NaiveGate):
+        pass
+
+    def _fmoe_general_global_forward(*args, **kwargs):
+        raise ImportError(_FMOE_IMPORT_ERROR)
+
+    def mark_module_parallel_comm(*args, **kwargs):
+        return None
+
+    def ensure_comm(*args, **kwargs):
+        return None
+
+    def count_by_gate(*args, **kwargs):
+        raise ImportError(_FMOE_IMPORT_ERROR)
+
+    fmoe_native = _MissingFMoENative()
+    tree = _MissingTree()
+    Slice = _MissingAutogradFunction
+    AllGather = _MissingAutogradFunction
 import os
 
 os.environ["CUDA_LAUNCH_BLOCKING"] = "1"

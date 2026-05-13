@@ -663,7 +663,7 @@ def train_and_evaluate_imoe(args, seed, fusion_model, fusion):
 
         now = datetime.now()
         save_dir = Path(
-            f"./outputs/imoe/{fusion}/{args.data}_{now.strftime('%Y-%m-%d_%H:%M:%S')}"
+            f"./outputs/imoe/{fusion}/{args.data}_{now.strftime('%Y-%m-%d_%H-%M-%S')}"
         )
         save_dir.mkdir(exist_ok=True, parents=True)
         np.save(save_dir / "all_expert_outputs.npy", np.array(all_expert_outputs))
@@ -702,7 +702,7 @@ def train_and_evaluate_imoe(args, seed, fusion_model, fusion):
 
         now = datetime.now()
         save_dir = Path(
-            f"./outputs/imoe/{fusion}/{args.data}_{now.strftime('%Y-%m-%d_%H:%M:%S')}"
+            f"./outputs/imoe/{fusion}/{args.data}_{now.strftime('%Y-%m-%d_%H-%M-%S')}"
         )
         save_dir.mkdir(exist_ok=True, parents=True)
         np.save(save_dir / "all_expert_outputs.npy", np.array(all_expert_outputs))

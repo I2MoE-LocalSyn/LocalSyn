@@ -136,7 +136,7 @@ def plot_interaction_loss_curves(
     now = datetime.now()
     plt.savefig(
         str(save_dir)
-        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H:%M:%S')}.pdf",
+        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H-%M-%S')}.pdf",
         dpi=300,
     )
 
@@ -165,7 +165,7 @@ def plot_total_loss_curves(
     now = datetime.now()
     plt.savefig(
         str(save_dir)
-        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H:%M:%S')}.pdf",
+        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H-%M-%S')}.pdf",
         dpi=300,
     )
 
@@ -275,7 +275,7 @@ def visualize_expert_logits(
     now = datetime.now()
     plt.savefig(
         str(save_dir)
-        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H:%M:%S')}.pdf",
+        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H-%M-%S')}.pdf",
         dpi=300,
     )
 
@@ -385,7 +385,7 @@ def visualize_expert_logits_simple_weight(
     now = datetime.now()
     plt.savefig(
         str(save_dir)
-        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H:%M:%S')}.pdf",
+        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H-%M-%S')}.pdf",
         dpi=300,
     )
 
@@ -493,7 +493,7 @@ def visualize_sample_weights(
     now = datetime.now()
     plt.savefig(
         str(save_dir)
-        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H:%M:%S')}.pdf",
+        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H-%M-%S')}.pdf",
         dpi=300,
     )
 
@@ -550,7 +550,7 @@ def visualize_expert_logits_distribution(
     now = datetime.now()
     plt.savefig(
         str(save_dir)
-        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H:%M:%S')}.pdf",
+        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H-%M-%S')}.pdf",
         dpi=300,
     )
 
@@ -598,7 +598,7 @@ def visualize_sample_weights_synergy_redundancy_only(
     now = datetime.now()
     plt.savefig(
         str(save_dir)
-        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H:%M:%S')}.pdf",
+        + f"/{args.data}_epochs_{args.train_epochs}_{args.modality}_seed_{args.seed}-{now.strftime('%Y-%m-%d_%H-%M-%S')}.pdf",
         dpi=300,
     )
 

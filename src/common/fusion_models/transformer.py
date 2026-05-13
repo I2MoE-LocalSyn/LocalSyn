@@ -60,7 +60,7 @@ class Transformer(nn.Module):
                     gate=gate,
                 )
             )
-        layers.append(Linear(hidden_dim * num_modalities, output_dim).cuda())
+        layers.append(Linear(hidden_dim * num_modalities, output_dim))
 
         self.network = nn.Sequential(*layers)
         self.pos_embed = nn.Parameter(
